@@ -10,3 +10,5 @@ converter
 *.out
 
 .vscode
+.DS_Store
+
