@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-generatejpg
+converter
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
