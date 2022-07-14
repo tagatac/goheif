@@ -7,6 +7,8 @@ converter: $(SOURCES)
 vendor: go.mod go.sum
 	go mod vendor -v
 
+.PHONY: deps generate test clean codecov
+
 deps:
 	go get -u -v ./...
 	go mod tidy -v
