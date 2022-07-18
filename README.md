@@ -70,9 +70,9 @@ func main() {
 ## TODO
 - Upstream the changes to heif?
 
-[ci-img]: https://travis-ci.com/tagatac/goheif.svg?branch=master
+[ci-img]: https://travis-ci.com/tagatac/goheif.svg?branch=main
 [ci]: https://app.travis-ci.com/github/tagatac/goheif
-[cov-img]: https://codecov.io/gh/tagatac/goheif/branch/master/graph/badge.svg
+[cov-img]: https://codecov.io/gh/tagatac/goheif/branch/main/graph/badge.svg
 [cov]: https://codecov.io/gh/tagatac/goheif
 [card-img]: https://goreportcard.com/badge/github.com/tagatac/goheif
 [card]: https://goreportcard.com/report/github.com/tagatac/goheif
