@@ -1,29 +1,29 @@
 SOURCES := $(shell find * -type f -name "*.go")
 COVERAGE_FILE=coverage.out
 
-converter: $(SOURCES)
+converter: $(SOURCES) download
 	go build -o $@ examples/heic2jpg/main.go
 
-vendor: go.mod go.sum
-	go mod vendor -v
-
-.PHONY: deps generate test clean codecov
+.PHONY: deps download generate test clean codecov
 
 deps:
 	go get -u -v ./...
 	go mod tidy -v
 
+download:
+	go mod download
+
 generate: clean
 	go get -u github.com/golang/mock/mockgen
 	go generate ./...
+	make deps
 
-test: vendor
+test: download
 	go test -race -coverprofile=$(COVERAGE_FILE) ./...
 	go tool cover -func=$(COVERAGE_FILE)
 
 clean:
 	rm -vrf converter \
-	vendor \
 	$(COVERAGE_FILE)
 
 codecov:

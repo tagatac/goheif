@@ -5,7 +5,7 @@ Intel and ARM supported
 
 ## Install
 
-```go get github.com/adrium/goheif```
+```go get github.com/tagatac/goheif```
 
 - Code Sample
 ```
@@ -70,9 +70,9 @@ func main() {
 ## TODO
 - Upstream the changes to heif?
 
-[ci-img]: https://travis-ci.com/adrium/goheif.svg?branch=master
-[ci]: https://app.travis-ci.com/github/adrium/goheif
-[cov-img]: https://codecov.io/gh/adrium/goheif/branch/master/graph/badge.svg
-[cov]: https://codecov.io/gh/adrium/goheif
-[card-img]: https://goreportcard.com/badge/github.com/adrium/goheif
-[card]: https://goreportcard.com/report/github.com/adrium/goheif
+[ci-img]: https://travis-ci.com/tagatac/goheif.svg?branch=master
+[ci]: https://app.travis-ci.com/github/tagatac/goheif
+[cov-img]: https://codecov.io/gh/tagatac/goheif/branch/master/graph/badge.svg
+[cov]: https://codecov.io/gh/tagatac/goheif
+[card-img]: https://goreportcard.com/badge/github.com/tagatac/goheif
+[card]: https://goreportcard.com/report/github.com/tagatac/goheif

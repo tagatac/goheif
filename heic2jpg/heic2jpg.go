@@ -8,11 +8,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/adrium/goheif"
 	"github.com/pkg/errors"
+	"github.com/tagatac/goheif"
 )
 
-//go:generate mockgen -destination=mock_heic2jpg/mock_heic2jpg.go github.com/adrium/goheif/heic2jpg Converter
+//go:generate mockgen -destination=mock_heic2jpg/mock_heic2jpg.go github.com/tagatac/goheif/heic2jpg Converter
 
 type (
 	// Converter provides a function for converting an HEIC image to a JPG image.

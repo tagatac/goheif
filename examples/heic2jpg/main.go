@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/adrium/goheif/heic2jpg"
+	"github.com/tagatac/goheif/heic2jpg"
 )
 
 func main() {
