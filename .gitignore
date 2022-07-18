@@ -4,11 +4,10 @@
 *.dll
 *.so
 *.dylib
-
-# Test binary, build with `go test -c`
-*.test
+converter
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
 .vscode
+.DS_Store

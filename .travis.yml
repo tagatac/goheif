@@ -1,0 +1,9 @@
+language: go
+go:
+  - 1.x
+install:
+  - go mod download
+script:
+  - make test
+after_success:
+  - make codecov

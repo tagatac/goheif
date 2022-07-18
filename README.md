@@ -1,10 +1,11 @@
+[![Build Status][ci-img]][ci] [![Coverage Status][cov-img]][cov] [![Go Report Card][card-img]][card]
 # GoHeif - A go gettable decoder/converter for HEIC based on libde265
 
 Intel and ARM supported
 
 ## Install
 
-```go get github.com/adrium/goheif```
+```go get github.com/tagatac/goheif```
 
 - Code Sample
 ```
@@ -69,4 +70,9 @@ func main() {
 ## TODO
 - Upstream the changes to heif?
 
-
+[ci-img]: https://travis-ci.com/tagatac/goheif.svg?branch=main
+[ci]: https://app.travis-ci.com/github/tagatac/goheif
+[cov-img]: https://codecov.io/gh/tagatac/goheif/branch/main/graph/badge.svg
+[cov]: https://codecov.io/gh/tagatac/goheif
+[card-img]: https://goreportcard.com/badge/github.com/tagatac/goheif
+[card]: https://goreportcard.com/report/github.com/tagatac/goheif
