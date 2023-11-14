@@ -562,6 +562,15 @@ de265_error decoder_context::read_sps_NAL(bitreader& reader)
 
   sps[ new_sps->seq_parameter_set_id ] = new_sps;
 
+  // Remove the all PPS that referenced the old SPS because parameters may have changed and we do not want to
+  // get the SPS and PPS parameters (e.g. image size) out of sync.
+  
+  for (auto& p : pps) {
+    if (p && p->seq_parameter_set_id == new_sps->seq_parameter_set_id) {
+      p = nullptr;
+    }
+  }
+
   return DE265_OK;
 }
 
@@ -1872,7 +1881,7 @@ void decoder_context::run_postprocessing_filters_sequential(de265_image* img)
 {
 #if SAVE_INTERMEDIATE_IMAGES
     char buf[1000];
-    sprintf(buf,"pre-lf-%05d.yuv", img->PicOrderCntVal);
+    snprintf(buf,sizeof(buf),"pre-lf-%05d.yuv", img->PicOrderCntVal);
     write_picture_to_file(img, buf);
 #endif
 
@@ -1881,7 +1890,7 @@ void decoder_context::run_postprocessing_filters_sequential(de265_image* img)
     }
 
 #if SAVE_INTERMEDIATE_IMAGES
-    sprintf(buf,"pre-sao-%05d.yuv", img->PicOrderCntVal);
+    snprintf(buf,sizeof(buf),"pre-sao-%05d.yuv", img->PicOrderCntVal);
     write_picture_to_file(img, buf);
 #endif
 
@@ -1890,7 +1899,7 @@ void decoder_context::run_postprocessing_filters_sequential(de265_image* img)
     }
 
 #if SAVE_INTERMEDIATE_IMAGES
-    sprintf(buf,"sao-%05d.yuv", img->PicOrderCntVal);
+    snprintf(buf,sizeof(buf),"sao-%05d.yuv", img->PicOrderCntVal);
     write_picture_to_file(img, buf);
 #endif
 }
