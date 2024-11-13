@@ -722,7 +722,7 @@ void seq_parameter_set::dump(int fd) const
 
   LOG1("num_short_term_ref_pic_sets : %d\n", ref_pic_sets.size());
 
-  for (int i = 0; i < ref_pic_sets.size(); i++) {
+  for (size_t i = 0; i < ref_pic_sets.size(); i++) {
     LOG1("ref_pic_set[ %2d ]: ",i);
     dump_compact_short_term_ref_pic_set(&ref_pic_sets[i], 16, fh);
   }
@@ -901,13 +901,16 @@ de265_error read_scaling_list(bitreader* br, const seq_parameter_set* sps,
       if (!scaling_list_pred_mode_flag) {
         int scaling_list_pred_matrix_id_delta = get_uvlc(br);
 
-	if (sizeId==3) {
-	  // adapt to our changed matrixId for size 3
-	  scaling_list_pred_matrix_id_delta *= 3;
-	}
-	
-        if (scaling_list_pred_matrix_id_delta == UVLC_ERROR ||
-            scaling_list_pred_matrix_id_delta > matrixId) {
+        if (scaling_list_pred_matrix_id_delta == UVLC_ERROR) {
+          return DE265_ERROR_CODED_PARAMETER_OUT_OF_RANGE;
+        }
+
+        if (sizeId == 3) {
+          // adapt to our changed matrixId for size 3
+          scaling_list_pred_matrix_id_delta *= 3;
+        }
+
+        if (scaling_list_pred_matrix_id_delta > matrixId) {
           return DE265_ERROR_CODED_PARAMETER_OUT_OF_RANGE;
         }
 
