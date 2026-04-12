@@ -14,21 +14,41 @@ import (
 
 //go:generate mockgen -destination=mock_heic2jpg/mock_heic2jpg.go github.com/tagatac/goheif/heic2jpg Converter
 
+// DefaultQuality is the JPEG encoding quality used when none is specified.
+// Go's image/jpeg default is 75; 90 preserves significantly more detail.
+const DefaultQuality = 90
+
 type (
 	// Converter provides a function for converting an HEIC image to a JPG image.
 	Converter interface {
 		// HEIC2JPG converts a specified HEIC image to JPG and writes it to dst.
 		HEIC2JPG(src, dst string) error
 	}
-	converter struct{}
+	converter struct {
+		quality int
+	}
+	// Option configures a Converter.
+	Option func(*converter)
 )
 
-// NewConverter returns a Converter.
-func NewConverter() Converter {
-	return converter{}
+// WithQuality sets the JPEG encoding quality (1–100). Higher values produce
+// larger files with fewer compression artifacts.
+func WithQuality(q int) Option {
+	return func(c *converter) {
+		c.quality = q
+	}
 }
 
-func (converter) HEIC2JPG(src, dst string) error {
+// NewConverter returns a Converter with the given options applied.
+func NewConverter(opts ...Option) Converter {
+	c := &converter{quality: DefaultQuality}
+	for _, opt := range opts {
+		opt(c)
+	}
+	return c
+}
+
+func (c converter) HEIC2JPG(src, dst string) error {
 	fi, err := os.Open(src)
 	if err != nil {
 		return errors.Wrapf(err, "open HEIC file %q", src)
@@ -55,7 +75,7 @@ func (converter) HEIC2JPG(src, dst string) error {
 	if err != nil {
 		return errors.Wrap(err, "add EXIF data to image writer")
 	}
-	err = jpeg.Encode(w, img, nil)
+	err = jpeg.Encode(w, img, &jpeg.Options{Quality: c.quality})
 	if err != nil {
 		return errors.Wrapf(err, "encode JPG file %q", dst)
 	}
