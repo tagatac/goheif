@@ -9,15 +9,17 @@ import (
 	"github.com/tagatac/goheif/heic2jpg"
 )
 
+var quality = flag.Int("quality", heic2jpg.DefaultQuality, "JPEG quality (1-100)")
+
 func main() {
 	flag.Parse()
 	if flag.NArg() != 2 {
-		fmt.Fprintf(os.Stderr, "usage: heic2jpg <in-file> <out-file> \n")
+		fmt.Fprintf(os.Stderr, "usage: heic2jpg [-quality N] <in-file> <out-file>\n")
 		os.Exit(1)
 	}
 	fin, fout := flag.Arg(0), flag.Arg(1)
 
-	converter := heic2jpg.NewConverter()
+	converter := heic2jpg.NewConverter(heic2jpg.WithQuality(*quality))
 	if err := converter.HEIC2JPG(fin, fout); err != nil {
 		log.Fatal(err)
 	}

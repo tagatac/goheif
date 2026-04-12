@@ -46,6 +46,22 @@ func newGridBox(data []byte) (*gridBox, error) {
 	return &gridBox{columns: columns, rows: rows, width: width, height: height}, nil
 }
 
+func cloneYCbCr(src *image.YCbCr) *image.YCbCr {
+	dst := &image.YCbCr{
+		SubsampleRatio: src.SubsampleRatio,
+		Rect:           src.Rect,
+		YStride:        src.YStride,
+		CStride:        src.CStride,
+		Y:              make([]byte, len(src.Y)),
+		Cb:             make([]byte, len(src.Cb)),
+		Cr:             make([]byte, len(src.Cr)),
+	}
+	copy(dst.Y, src.Y)
+	copy(dst.Cb, src.Cb)
+	copy(dst.Cr, src.Cr)
+	return dst
+}
+
 func decodeHevcItem(dec *libde265.Decoder, hf *heif.File, item *heif.Item) (*image.YCbCr, error) {
 	if item.Info.ItemType != "hvc1" {
 		return nil, fmt.Errorf("unsupported item type: %s", item.Info.ItemType)
@@ -110,7 +126,14 @@ func Decode(r io.Reader) (image.Image, error) {
 	}
 	defer dec.Free()
 	if it.Info.ItemType == "hvc1" {
-		return decodeHevcItem(dec, hf, it)
+		ycc, err := decodeHevcItem(dec, hf, it)
+		if err != nil {
+			return nil, err
+		}
+		// ycc.Y/Cb/Cr may be unsafe.Slice views into C memory (when SafeEncoding
+		// is false). Clone into Go memory before defer dec.Free() fires and
+		// releases the C-side image buffer, which would leave dangling pointers.
+		return cloneYCbCr(ycc), nil
 	}
 
 	if it.Info.ItemType != "grid" {
