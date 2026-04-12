@@ -16,7 +16,7 @@ import (
 
 // DefaultQuality is the JPEG encoding quality used when none is specified.
 // Go's image/jpeg default is 75; 90 preserves significantly more detail.
-const DefaultQuality = 90
+const DefaultQuality = 75
 
 type (
 	// Converter provides a function for converting an HEIC image to a JPG image.
