@@ -7,16 +7,15 @@ converter: $(SOURCES) download
 .PHONY: deps download generate test clean codecov
 
 deps:
-	go get -u -v ./...
+	go get -u -t -v ./...
 	go mod tidy -v
 
 download:
 	go mod download
 
 generate: clean
-	go get -u github.com/golang/mock/mockgen
+	go install go.uber.org/mock/mockgen@latest
 	go generate ./...
-	make deps
 
 test: download
 	go test -race -coverprofile=$(COVERAGE_FILE) ./...
